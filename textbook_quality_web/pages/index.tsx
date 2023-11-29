@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-
+import OverviewFlow from "./OverviewFlow";
 interface IGenerateTopicsResponse {
   status: string;
   data: any;
@@ -12,11 +12,11 @@ export default function Home() {
   const [status, setStatus] = useState<string>("");
   const [responseData, setResponseData] = useState<any>(null); // Initialize the state
 
-  console.log("responseData", responseData)
+  console.log("responseData", responseData);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-  
+
     const response = await fetch("/api/generateTopics", {
       method: "POST",
       headers: {
@@ -28,11 +28,11 @@ export default function Home() {
         iterations,
       }),
     });
-  
+
     const data: IGenerateTopicsResponse = await response.json();
     setStatus(data.status);
     setResponseData(data.data); // Set the state with the returned data
-  
+
     // If the generation was successful, call the augmentTopics function
     if (data.status === "success") {
       handleAugmentTopics(outFile);
@@ -51,15 +51,19 @@ export default function Home() {
         domain: "python", // You can modify this as needed
       }),
     });
-  
+
     const data: IGenerateTopicsResponse = await response.json();
     setStatus(data.status);
     setResponseData(data.data); // Set the state with the returned data
   };
   return (
-    <main className="min-h-screen">
+    <div
+      style={{ width: "100vw", height: "100vh", backgroundColor: "#F3EEEB" }}
+    >
+      {" "}
       {/* ...existing code... */}
-      <form onSubmit={handleSubmit}>
+      <OverviewFlow />
+      {/* <form onSubmit={handleSubmit}>
         <input
           type="text"
           value={subject}
@@ -79,9 +83,9 @@ export default function Home() {
           placeholder="Iterations"
         />
         <button type="submit">Generate Topics</button>
-      </form>
-      {status && <p>Status: {status}</p>}
-      {responseData && <p>Response: {JSON.stringify(responseData)}</p>}
-    </main>
+      </form> */}
+      {/* {status && <p>Status: {status}</p>} */}
+      {/* {responseData && <p>Response: {JSON.stringify(responseData)}</p>} */}
+    </div>
   );
 }
