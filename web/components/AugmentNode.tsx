@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Handle, Position } from "reactflow";
-import { statusColor } from "@/util/status";
+import { getStatusColorClass } from "@/util/status";
 import { StatusContext } from "@/contexts/StatusContext";
 
 interface IGenerateTopicsResponse {
@@ -8,13 +8,21 @@ interface IGenerateTopicsResponse {
   data: any;
 }
 function AugmentNode({ data }: any) {
-  const { augmentStatus, setAugmentStatus, generateStatus, outFile } =
-    useContext(StatusContext);
+  const {
+    augmentStatus,
+    setAugmentStatus,
+    generateStatus,
+    outFile,
+    setAugmentFile,
+    maxAugmentedTopics,
+  } = useContext(StatusContext);
   const [status, setStatus] = useState<string>("");
   const [responseData, setResponseData] = useState<any>(null); // Initialize the state
 
   const handleAugmentTopics = async (inFile: string) => {
     setAugmentStatus("pending");
+    const augmentedFile = "augmented_" + inFile;
+    setAugmentFile(augmentedFile);
     const response = await fetch("/api/augmentTopics", {
       method: "POST",
       headers: {
@@ -22,7 +30,8 @@ function AugmentNode({ data }: any) {
       },
       body: JSON.stringify({
         in_file: inFile,
-        out_file: "augmented_" + inFile,
+        out_file: augmentedFile,
+        max: maxAugmentedTopics,
       }),
     });
 
@@ -44,22 +53,30 @@ function AugmentNode({ data }: any) {
   }, [generateStatus]);
   return (
     <>
-      <div className="flex flex-col border border-solid border-gray-200 h-full rounded-2xl bg-white/70 shadow-[0_7px_9px_0_rgba(0,0,0,0.02)]">
-        <div className="text-xs px-3 py-2 border-b border-solid border-gray-200 font-mono font-semibold rounded-t-2xl">
-          <p className="font-mono">Step 2: Augment Topics</p>
+      <div className="flex flex-col border border-solid border-black h-full rounded-lg  bg-gradient-to-r from-[#9F59FF]/40 to-[#1D1D1D] shadow-[0_7px_9px_0_rgba(0,0,0,0.02)]">
+        <div className="text-xs px-3 py-2 border-b border-solid border-[#00FF00] font-mono font-semibold rounded-t-lg">
+          <p className="font-mono text-white">Step 2: Augment Topics</p>
         </div>
-        <div className="relative bg-white p-3 flex text-xs text-gray-500 font-mono font-semibold rounded-b-2xl">
+        <div className="relative bg-[#132137] p-3 flex text-xs text-white font-mono font-semibold rounded-b-lg">
           Status:{" "}
           <span
-            className={`inline-block w-3 h-3 ml-2 mr-2 mt-0.5 rounded-full bg-${statusColor(
+            className={`inline-block w-3 h-3 ml-2 mr-2 mt-0.5 rounded-full ${getStatusColorClass(
               augmentStatus
-            )}-400`}
+            )}`}
           ></span>{" "}
           {augmentStatus}
         </div>
       </div>
-      <Handle type="target" position={Position.Left} />
-      <Handle type="source" position={Position.Right} />
+      <Handle
+        style={{ width: "10px", height: "10px", backgroundColor: "#6C00FF" }}
+        type="target"
+        position={Position.Left}
+      />
+      <Handle
+        style={{ width: "10px", height: "10px", backgroundColor: "#6C00FF" }}
+        type="source"
+        position={Position.Right}
+      />
     </>
   );
 }

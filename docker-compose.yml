@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: textbook
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  migrate:
+    build: ./textbook_quality
+    command: ["./wait.sh", "db", "poetry", "run", "invoke", "migrate-dev"]
+    volumes:
+      - ./textbook_quality:/textbook_quality
+    depends_on:
+      - db
+
+  app:
+    build: ./textbook_quality
+    command: poetry run uvicorn server.server:app --host 0.0.0.0 --port 8000
+    volumes:
+      - ./textbook_quality:/textbook_quality
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    shm_size: '0.66gb'
+
+  web:
+    build: ./web
+    command: pnpm dev
+    volumes:
+      - ./web:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - app
+
+volumes:
+  postgres_data:

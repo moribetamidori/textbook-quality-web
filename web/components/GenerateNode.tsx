@@ -1,6 +1,6 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { Handle, Position } from "reactflow";
-import { statusColor } from "@/util/status";
+import { getStatusColorClass } from "@/util/status";
 import { StatusContext } from "@/contexts/StatusContext";
 
 interface IGenerateTopicsResponse {
@@ -9,18 +9,30 @@ interface IGenerateTopicsResponse {
 }
 
 function GenerateNode({ data }: any) {
-  const { generateStatus, setGenerateStatus, setOutFile } =
-    useContext(StatusContext);
+  const {
+    generateStatus,
+    setGenerateStatus,
+    setOutFile,
+    maxAugmentedTopics,
+    maxCoursesPerBook,
+    numTextbooks,
+    setMaxAugmentedTopics,
+    setMaxCoursesPerBook,
+    setNumTextbooks,
+    setMaxGeneratedTopics,
+    maxGeneratedTopics,
+  } = useContext(StatusContext);
+
+  const statusColorClasses: { [key: string]: string } = {
+    not_started: "bg-gray-400",
+    pending: "bg-yellow-400",
+    finished: "bg-green-400",
+    failed: "bg-red-400",
+  };
 
   const [subject, setSubject] = useState<string>("");
-  const [iterations, setIterations] = useState<number>(0);
   const [status, setStatus] = useState<string>("");
   const [responseData, setResponseData] = useState<any>(null); // Initialize the state
-  const [color, setColor] = useState<string>("");
-
-  useEffect(() => {
-    setColor(statusColor(generateStatus));
-  }, [generateStatus]);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -35,7 +47,7 @@ function GenerateNode({ data }: any) {
       body: JSON.stringify({
         subject,
         out_file: currentOutFile,
-        iterations,
+        iterations: maxGeneratedTopics,
       }),
     });
 
@@ -54,41 +66,108 @@ function GenerateNode({ data }: any) {
     setSubject(value);
     const newOutFile = value.replace(/\s/g, "_") + "_topics.json";
     setOutFile(newOutFile);
-    setIterations(10);
   }
   return (
     <>
-      <div className="flex flex-col border border-solid border-gray-200 h-full rounded-2xl bg-white/70 shadow-[0_7px_9px_0_rgba(0,0,0,0.02)]">
-        <div className="text-xs px-3 py-2 border-b border-solid border-gray-200 font-mono font-semibold rounded-t-2xl">
+      <div className="flex flex-col border border-solid border-black h-full rounded-lg  bg-gradient-to-r from-[#00FF00]/40 to-[#1D1D1D] shadow-[0_7px_9px_0_rgba(0,0,0,0.02)]">
+        <div className="text-xs px-3 py-2 border-b  border-solid border-[#00FF00] font-mono font-semibold rounded-t-lg text-white">
           Step 1: Generate Topics
         </div>
-        <div className="relative bg-white p-3 flex flex-col rounded-b-2xl">
-          {color && (
-            <div className="relative bg-white p-3 flex text-xs text-gray-500 font-mono font-semibold rounded-b-2xl">
-              Status:{" "}
-              <span
-                className={`inline-block w-3 h-3 ml-2 mr-2 mt-0.5 rounded-full bg-${color}-400`}
-              ></span>{" "}
-              {generateStatus}
-            </div>
-          )}
+        <div className="relative bg-[#132137] p-3 flex flex-col rounded-b-lg">
+          <div className="relative bg-[#132137] flex text-xs text-white font-mono font-semibold rounded-b-lg">
+            Status:{" "}
+            <span
+              className={`inline-block w-3 h-3 ml-2 mr-2 mt-0.5 rounded-full ${getStatusColorClass(
+                generateStatus
+              )}`}
+            ></span>
+            {generateStatus}
+          </div>
 
           <form onSubmit={handleSubmit}>
-            <input
-              className="rounded-lg border border-black mr-2 nondrag"
-              id="text"
-              name="text"
-              value={subject}
-              onChange={handleInputChange}
-            />
-            <button className="nodrag bg-[#ff0071] rounded-lg px-4 font-mono font-semibold text-xs hover:scale-105">
-              Generate
-            </button>
+            <div className="mt-2 flex flex-col">
+              <span className="text-xs font-mono font-semibold text-white">
+                subject
+              </span>
+              <input
+                className="rounded-lg font-mono text-md px-2 border border-black mr-2 nondrag bg-[#272B42] text-white"
+                id="text"
+                name="text"
+                placeholder="Enter a subject"
+                value={subject}
+                onChange={handleInputChange}
+              />
+              <span className="text-xs mt-2 font-mono font-semibold  text-white">
+                maxGeneratedTopics
+              </span>
+              <input
+                className=" rounded-lg font-mono text-md px-2 border border-black mr-2 nondrag bg-[#272B42] text-white"
+                id="maxGeneratedTopics"
+                name="maxGeneratedTopics"
+                value={maxGeneratedTopics}
+                onChange={(e) =>
+                  setMaxGeneratedTopics(
+                    e.target.value ? parseInt(e.target.value) : 0
+                  )
+                }
+              />
+              <span className="text-xs mt-2 font-mono font-semibold  text-white">
+                maxAugmentedTopics
+              </span>
+              <input
+                className=" rounded-lg font-mono text-md px-2 border border-black mr-2 nondrag bg-[#272B42] text-white"
+                id="maxAugmentedTopics"
+                name="maxAugmentedTopics"
+                value={maxAugmentedTopics}
+                onChange={(e) =>
+                  setMaxAugmentedTopics(
+                    e.target.value ? parseInt(e.target.value) : 0
+                  )
+                }
+              />
+              <span className="text-xs mt-2 font-mono font-semibold  text-white">
+                maxCoursesPerBook
+              </span>
+              <input
+                className="rounded-lg font-mono text-md px-2 border border-black mr-2 nondrag bg-[#272B42] text-white"
+                id="maxCoursesPerBook"
+                name="maxCoursesPerBook"
+                value={maxCoursesPerBook}
+                onChange={(e) =>
+                  setMaxCoursesPerBook(
+                    e.target.value ? parseInt(e.target.value) : 0
+                  )
+                }
+              />
+              <span className="text-xs mt-2 font-mono font-semibold  text-white">
+                numTextbooks
+              </span>
+              <input
+                className="rounded-lg font-mono text-md px-2 border border-black mr-2 nondrag bg-[#272B42] text-white"
+                id="numTextbooks"
+                name="numTextbooks"
+                value={numTextbooks}
+                onChange={(e) =>
+                  setNumTextbooks(e.target.value ? parseInt(e.target.value) : 0)
+                }
+              />
+              <button className="mt-4 nodrag bg-[#00FF00] rounded-lg px-4 py-1 font-mono font-semibold text-xs hover:scale-105">
+                Generate
+              </button>
+            </div>
           </form>
         </div>
       </div>
-      <Handle type="target" position={Position.Left} />
-      <Handle type="source" position={Position.Right} />
+      <Handle
+        style={{ width: "10px", height: "10px", backgroundColor: "#00FF00" }}
+        type="target"
+        position={Position.Left}
+      />
+      <Handle
+        style={{ width: "10px", height: "10px", backgroundColor: "#00FF00" }}
+        type="source"
+        position={Position.Right}
+      />
     </>
   );
 }

@@ -5,7 +5,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const response = await fetch("http://127.0.0.1:8000/generate_topics", {
+    const response = await fetch("http://app:8000/generate_topics", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -15,13 +15,10 @@ export default async function handler(
 
     if (response.ok) {
       const data = await response.json();
-      // Check if the status is 'success' and if the data contains 'file'
       if (data.status === "success" && data.file) {
-        // Fetch the file content
         const fileResponse = await fetch(data.file);
         if (fileResponse.ok) {
           const fileData = await fileResponse.json();
-          // Add the file content to the response data
           data.fileContent = fileData;
         }
       }

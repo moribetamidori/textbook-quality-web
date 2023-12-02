@@ -8,6 +8,13 @@ export default function App({ Component, pageProps }: AppProps) {
   const [augmentStatus, setAugmentStatus] = useState("not_started");
   const [textbookStatus, setTextbookStatus] = useState("not_started");
   const [outFile, setOutFile] = useState("");
+  const [augmentFile, setAugmentFile] = useState("");
+  const [booksFile, setBooksFile] = useState("");
+  const [maxAugmentedTopics, setMaxAugmentedTopics] = useState(0);
+  const [maxCoursesPerBook, setMaxCoursesPerBook] = useState(0);
+  const [numTextbooks, setNumTextbooks] = useState(0);
+  const [maxGeneratedTopics, setMaxGeneratedTopics] = useState(0);
+
   return (
     <StatusContext.Provider
       value={{
@@ -19,6 +26,18 @@ export default function App({ Component, pageProps }: AppProps) {
         setTextbookStatus,
         outFile,
         setOutFile,
+        augmentFile,
+        setAugmentFile,
+        booksFile,
+        setBooksFile,
+        maxAugmentedTopics,
+        setMaxAugmentedTopics,
+        maxCoursesPerBook,
+        setMaxCoursesPerBook,
+        numTextbooks,
+        setNumTextbooks,
+        maxGeneratedTopics,
+        setMaxGeneratedTopics,
       }}
     >
       <Component {...pageProps} />

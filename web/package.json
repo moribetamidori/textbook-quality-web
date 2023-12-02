@@ -9,12 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/antd": "^1.0.0",
+    "antd": "^5.11.5",
+    "file-saver": "^2.0.5",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
     "reactflow": "^11.10.1"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
