@@ -20,6 +20,8 @@ type StatusContextType = {
   setNumTextbooks: React.Dispatch<React.SetStateAction<number>>;
   maxGeneratedTopics: number;
   setMaxGeneratedTopics: React.Dispatch<React.SetStateAction<number>>;
+  numAugmentedAgents: number;
+  setNumAugmentedAgents: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const StatusContext = createContext<StatusContextType>({
@@ -43,4 +45,6 @@ export const StatusContext = createContext<StatusContextType>({
   setNumTextbooks: () => {},
   maxGeneratedTopics: 0,
   setMaxGeneratedTopics: () => {},
+  numAugmentedAgents: 0,
+  setNumAugmentedAgents: () => {},
 });

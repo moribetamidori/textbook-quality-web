@@ -14,6 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const [maxCoursesPerBook, setMaxCoursesPerBook] = useState(0);
   const [numTextbooks, setNumTextbooks] = useState(0);
   const [maxGeneratedTopics, setMaxGeneratedTopics] = useState(0);
+  const [numAugmentedAgents, setNumAugmentedAgents] = useState(1);
 
   return (
     <StatusContext.Provider
@@ -38,6 +39,8 @@ export default function App({ Component, pageProps }: AppProps) {
         setNumTextbooks,
         maxGeneratedTopics,
         setMaxGeneratedTopics,
+        numAugmentedAgents,
+        setNumAugmentedAgents,
       }}
     >
       <Component {...pageProps} />
