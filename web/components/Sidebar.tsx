@@ -3,6 +3,9 @@ import GenerateNodeProperties from "./Properties/GenerateNodeProperties";
 import TextbookNodeProperties from "./Properties/TextbookNodeProperties";
 import { StatusContext } from "@/contexts/StatusContext";
 import AugmentNodeProperties from "./Properties/AugmentNodeProperties";
+import StartNodeProperties from "./Properties/StartNodeProperties";
+import SubjectNodeProperties from "./Properties/SubjectNodeProperties";
+import DownloadNodeProperties from "./Properties/DownloadNodeProperties";
 
 interface SidebarProps {
   open: boolean;
@@ -32,9 +35,15 @@ const Sidebar: React.FC<SidebarProps> = ({
           />
         );
       case "augment":
-        return <AugmentNodeProperties  node={node}/>;
+        return <AugmentNodeProperties node={node} />;
       case "textbook":
         return <TextbookNodeProperties />;
+      case "start":
+        return <StartNodeProperties />;
+      case "subject":
+        return <SubjectNodeProperties />;
+      case "download":
+        return <DownloadNodeProperties />;
       default:
         return content;
     }

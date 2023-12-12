@@ -5,17 +5,20 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import "reactflow/dist/style.css";
 import ReactFlow, { addEdge, MiniMap, Controls, Background } from "reactflow";
 import { useNodesState } from "reactflow";
 import { useEdgesState } from "reactflow";
-import GenerateNode from "./GenerateNode";
-import "reactflow/dist/style.css";
-import AugmentNode from "./AugmentNode";
-import TextbookNode from "./TextbookNode";
+import StartNode from "./Nodes/StartNode";
+import GenerateNode from "./Nodes/GenerateNode";
+import AugmentNode from "./Nodes/AugmentNode";
+import TextbookNode from "./Nodes/TextbookNode";
 import Sidebar from "./Sidebar";
 import { generateNodes } from "@/util/nodeHelper";
 import GenerateNodeProperties from "./Properties/GenerateNodeProperties";
 import { StatusContext } from "@/contexts/StatusContext";
+import SubjectNode from "./Nodes/SubjectNode";
+import DownloadNode from "./Nodes/DownloadNode";
 const OverviewFlow = () => {
   const { numAugmentedAgents, setNumAugmentedAgents } =
     useContext(StatusContext);
@@ -51,12 +54,16 @@ const OverviewFlow = () => {
       ),
       augment: AugmentNode,
       textbook: TextbookNode,
+      start: StartNode,
+      subject: SubjectNode,
+      download: DownloadNode,
     }),
     [setNumAugmentedAgents]
   );
 
   const onInit = (reactFlowInstance: any) => console.log("flow loaded:");
-  const { nodes: initialNodes, edges: initialEdges } = generateNodes(numAugmentedAgents);
+  const { nodes: initialNodes, edges: initialEdges } =
+    generateNodes(numAugmentedAgents);
 
   const [generatedElements, setGeneratedElements] = useState({
     nodes: initialNodes,
@@ -64,13 +71,12 @@ const OverviewFlow = () => {
   });
 
   useEffect(() => {
-    console.log("numAugmentedAgents changed", numAugmentedAgents);
-    const generatedElements =generateNodes(numAugmentedAgents)
+    const generatedElements = generateNodes(numAugmentedAgents);
     setGeneratedElements(generatedElements);
     setNodes(generatedElements.nodes);
     setEdges(generatedElements.edges);
   }, [numAugmentedAgents]);
-  console.log("generatedElements", generatedElements);
+
   const [nodes, setNodes, onNodesChange] = useNodesState(
     generatedElements.nodes
   );

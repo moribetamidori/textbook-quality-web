@@ -17,10 +17,16 @@ function AugmentNodeProperties({ node }: AugmentNodePropertiesProps) {
     outFile,
     setAugmentFile,
     maxAugmentedTopics,
+    node_id02
   } = useContext(StatusContext);
   const [status, setStatus] = useState<string>("");
   const [responseData, setResponseData] = useState<any>(null); // Initialize the state
-
+  const [color, setColor] = useState<string>(
+    getStatusColorClass(augmentStatus)
+  );
+  useEffect(() => {
+    setColor(getStatusColorClass(augmentStatus));
+  }, [augmentStatus]);
   const handleAugmentTopics = async (inFile: string) => {
     setAugmentStatus("pending");
     const augmentedFile = "augmented_" + inFile;
@@ -39,7 +45,6 @@ function AugmentNodeProperties({ node }: AugmentNodePropertiesProps) {
 
     const data: IGenerateTopicsResponse = await response.json();
     setStatus(data.status);
-    console.log(data.status);
     setResponseData(data.data);
     if (data.status === "success") {
       setAugmentStatus("finished");
@@ -58,27 +63,25 @@ function AugmentNodeProperties({ node }: AugmentNodePropertiesProps) {
       <div className="flex flex-col border border-solid border-black h-full rounded-sm  bg-gradient-to-r from-[#9F59FF]/40 to-[#1D1D1D] shadow-[0_7px_9px_0_rgba(0,0,0,0.02)]">
         <div className="text-xs px-3 py-2 border-b border-solid border-[#00FF00] font-mono font-semibold rounded-t-sm">
           <p className="font-mono text-white">
-            Step 2: Augment Topics{" "}
-            <button className="border px-2 rounded-xl">
+            {node_id02}
+            {/* <button className="border px-2 rounded-xl">
               {" "}
               ID:{node.data.label}
-            </button>
+            </button> */}
           </p>
         </div>
         <div className="relative bg-[#17191A] p-1 flex flex-col text-xs text-white font-mono font-semibold rounded-b-sm">
           <div className="flex px-2 py-2 ">
             Status:{" "}
-            <span
-              className={`inline-block w-3 h-3 ml-2 mr-2 mt-0.5 rounded-full ${getStatusColorClass(
-                augmentStatus
-              )}`}
-            ></span>{" "}
+            {color && (
+              <span
+                style={{ backgroundColor: color }}
+                className={`inline-block w-3 h-3 ml-2 mr-2 mt-0.5 rounded-full }`}
+              ></span>
+            )}
             {augmentStatus}
           </div>
-          <div className="h-96 border border-[#292A2C] bg-[#010201] rounded-sm">
-
-          </div>
-      
+          <div className="h-96 border border-[#292A2C] bg-[#010201] rounded-sm"></div>
         </div>
       </div>
     </>

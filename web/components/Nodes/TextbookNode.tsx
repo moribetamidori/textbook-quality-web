@@ -19,9 +19,15 @@ function TextbookNode({ data }: any) {
     numTextbooks,
     setBooksFile,
     booksFile,
+    node_id03,
   } = useContext(StatusContext);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
-
+  const [color, setColor] = useState<string>(
+    getStatusColorClass(textbookStatus)
+  );
+  useEffect(() => {
+    setColor(getStatusColorClass(textbookStatus));
+  }, [textbookStatus]);
   useEffect(() => {
     if (augmentStatus === "finished") {
       handleGenerateBooks(augmentFile);
@@ -61,18 +67,21 @@ function TextbookNode({ data }: any) {
     <>
       <div className="flex flex-col border border-solid border-black h-full rounded-lg  bg-gradient-to-r from-[#FF9A3D]/40 to-[#1D1D1D] shadow-[0_7px_9px_0_rgba(0,0,0,0.02)]">
         <div className="text-xs px-3 py-2 border-b border-solid border-[#00FF00] font-mono font-semibold rounded-t-lg">
-          <p className="font-mono text-white">Step 3: Generate Textbook</p>
+          <p className="font-mono text-white">{node_id03}</p>
         </div>
         <div className="flex flex-col relative bg-[#132137] p-3 flex text-xs text-white font-mono font-semibold rounded-b-lg">
           <div className="flex">
             Status:{" "}
-            <span
-              className={`inline-block w-3 h-3 ml-2 mr-2 mt-0.5 rounded-full ${getStatusColorClass(
-                textbookStatus
-              )}`}
-            ></span>{" "}
+            {color && (
+              <span
+                style={{ backgroundColor: color }}
+                className={`inline-block w-3 h-3 ml-2 mr-2 mt-0.5 rounded-full }`}
+              ></span>
+            )}
             {textbookStatus}
           </div>
+          <div className="h-14 mt-2 border border-[#292A2C] bg-[#010201] rounded-sm"></div>
+
           <div className="w-full">
             {fileUrl && (
               <button
