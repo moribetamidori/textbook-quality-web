@@ -79,3 +79,14 @@ async def generate_books(request: BookGeneratorRequest):
         raise HTTPException(status_code=500, detail="Book generation failed.") from e
 
     return {"status": "success", "data": data}
+
+class StopProcessRequest(BaseModel):
+    process_name: str
+
+@app.post("/stop_process")
+async def stop_process(request: StopProcessRequest):
+    try:
+        subprocess.check_call(["pkill", "-f", request.process_name])
+        return {"status": "success", "message": "Process stopped successfully."}
+    except subprocess.CalledProcessError as e:
+        raise HTTPException(status_code=500, detail="Failed to stop process.") from e

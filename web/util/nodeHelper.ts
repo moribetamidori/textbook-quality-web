@@ -62,7 +62,7 @@ export const generateNodes = (numAugmentedAgents: number) => {
       source: "3",
       target: "4",
       animated: false,
-      style: { stroke: "#5174ED", strokeWidth: 2 },
+      style: { stroke: "#FF9A3D", strokeWidth: 2 },
     }
   ];
 
