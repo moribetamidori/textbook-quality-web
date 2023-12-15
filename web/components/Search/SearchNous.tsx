@@ -40,7 +40,7 @@ const SearchNous: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <div className="mt-3 h-[500px] w-[720px] mx-auto ">
         <form onSubmit={handleSubmit} className="flex mt-4 items-center">
           <input
@@ -57,7 +57,7 @@ const SearchNous: React.FC = () => {
             Ask Synthia
           </button>
         </form>
-        <div className="min-h-[600px] border border-[#292A2C] bg-[#010201] rounded-sm text-white overflow-auto">
+        <div className="min-h-[400px] h-auto border border-[#292A2C] bg-[#010201] rounded-sm text-white overflow-auto">
           {answer && <p className="p-4">{answer}</p>}
         </div>
       </div>

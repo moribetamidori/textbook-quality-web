@@ -44,52 +44,64 @@ export default function Home() {
           <img src="/synthia.png" className="w-12 h-12 rounded-lg" />
           {/* <p className="text-white">Nous</p> */}
         </div>
-        <div className="mt-20 ">
-          <img
-            src="/icons/laptop.png"
-            className="w-6 h-6 ml-5 rounded-lg opacity-60"
-          />
-          <div className="border border-r border-gray-400 mt-5 opacity-20 "></div>
-          <button
-            className={`mt-5 ml-2 px-3 rounded-lg py-1 ${
-              selectedIcon === "message" ? "bg-blue-500" : ""
-            }`}
-            onClick={() => handleIconClick("message")}
-          >
-            <img
-              src="/icons/message.png"
-              className="w-6 h-6 rounded-lg opacity-60"
-            />
-          </button>
-          <button
-            className={`mt-5 ml-2 px-3 rounded-lg py-1 ${
-              selectedIcon === "robot" ? "bg-blue-500" : ""
-            }`}
-            onClick={() => handleIconClick("robot")}
-          >
-            <img
-              src="/icons/robot.png"
-              className="w-6 h-6 rounded-lg opacity-60"
-            />
-          </button>
-          <img
-            src="/icons/code.png"
-            className="mt-5 w-6 h-6 ml-5 rounded-lg opacity-60"
-          />
-        </div>
-        <div className="fixed bottom-10 left-0">
-          <img
-            src="/icons/download.png"
-            className=" w-5 mx-7 rounded-lg opacity-60"
-          />
-          <img
-            src="/icons/setting.png"
-            className="mt-5 mx-7 w-5 rounded-lg opacity-60"
-          />
-          <img
-            src="/icons/sun.png"
-            className="mt-5 w-5 mx-7  rounded-lg opacity-60"
-          />
+        <div className="mt-20 flex flex-col justify-between h-full">
+          <div>
+            <button disabled style={{ cursor: "not-allowed" }}>
+              <img
+                src="/icons/laptop.png"
+                className="w-6 h-6 ml-5 rounded-lg opacity-60"
+              />
+            </button>
+            <div className="border border-r border-gray-400 mt-5 opacity-20 "></div>
+            <button
+              className={`mt-5 ml-2 px-3 rounded-lg py-1 ${
+                selectedIcon === "message" ? "bg-blue-500" : ""
+              }`}
+              onClick={() => handleIconClick("message")}
+            >
+              <img
+                src="/icons/message.png"
+                className="w-6 h-6 rounded-lg opacity-60"
+              />
+            </button>
+            <button
+              className={`mt-5 ml-2 px-3 rounded-lg py-1 ${
+                selectedIcon === "robot" ? "bg-blue-500" : ""
+              }`}
+              onClick={() => handleIconClick("robot")}
+            >
+              <img
+                src="/icons/robot.png"
+                className="w-6 h-6 rounded-lg opacity-60"
+              />
+            </button>
+            <button disabled style={{ cursor: "not-allowed" }}>
+              <img
+                src="/icons/code.png"
+                className="mt-5 w-6 h-6 ml-5 rounded-lg opacity-60"
+              />
+            </button>
+          </div>
+          <div className="mb-24 mt-20">
+            <button disabled style={{ cursor: "not-allowed" }}>
+              <img
+                src="/icons/download.png"
+                className=" w-5 ml-5 rounded-lg opacity-60"
+              />
+            </button>
+            <button disabled style={{ cursor: "not-allowed" }}>
+              <img
+                src="/icons/setting.png"
+                className="mt-5 ml-5 w-5 rounded-lg opacity-60"
+              />
+            </button>
+            <button disabled style={{ cursor: "not-allowed" }}>
+              <img
+                src="/icons/sun.png"
+                className="mt-5 w-5 ml-5  rounded-lg opacity-60"
+              />
+            </button>
+          </div>
         </div>
       </div>
       {/* {isModalVisible && <KeyInput closePopUp={handleCancel} />} */}
