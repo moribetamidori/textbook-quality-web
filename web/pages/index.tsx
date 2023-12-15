@@ -93,7 +93,14 @@ export default function Home() {
         </div>
       </div>
       {/* {isModalVisible && <KeyInput closePopUp={handleCancel} />} */}
-      {showSearch ? <SearchNous /> : <OverviewFlow />}
+
+      {showSearch ? (
+        <div className="pl-24">
+          <SearchNous />
+        </div>
+      ) : (
+        <OverviewFlow />
+      )}
     </div>
   );
 }
